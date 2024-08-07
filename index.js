@@ -24,7 +24,6 @@ client.once('ready', async () => {
 });
 
 client.on('messageCreate', async message => {
-    // Check if the message is a direct message (DM)
     console.log(message.channel.type)
     if (message.channel.type === 1 && !message.author.bot) {
       await addUserToFile(message.author)
