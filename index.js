@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, ActivityType } = require('discord.js');
 require('dotenv').config();
 const fs = require('fs')
 
@@ -12,6 +12,10 @@ const client = new Client({
 
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  client.user.setPresence({
+    activities: [{ name: "thisisnotawebsite.com", type: ActivityType.Watching, }],
+  });
+
   const interval = setInterval(async () => {
     const data = await fetch("https://files.thisisnotawebsitedotcom.com/is-it-time-yet/well-is-it.txt").then(response => response.text());
     console.log(data)
@@ -26,6 +30,7 @@ client.once('ready', async () => {
 client.on('messageCreate', async message => {
     console.log(message.channel.type)
     if (message.channel.type === 1 && !message.author.bot) {
+      message.channel.sendTyping();
       await addUserToFile(message.author)
     }
 });
